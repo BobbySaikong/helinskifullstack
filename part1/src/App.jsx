@@ -1,76 +1,61 @@
+import { useState } from 'react'
+
 const App = () => {
-  
-  const course = 'Half Stack application development'
-  const parts = [
-    {
-      name: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      name: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      name: 'State of a component',
-      exercises: 14
-    }
-  ]
-  
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [average, setAverage] = useState(0)
 
-  return (
-    <div>
-      <Header name={course}/>
-      <Content parts={parts}/>
-      <Total parts={parts}/>
-
-    </div>
-
-    
+  const Button = (props) => (
+    <button onClick={props.onClick}>
+      {props.text}
+    </button>
   )
+
+  const handleGood = () => {
+    const updatedGood = good + 1
+    setGood(updatedGood)
+    const Updatedtotal = updatedGood + bad + neutral
+    setTotal(Updatedtotal)
+    const badpoint = -1 * bad
+    const updatedAvg = (badpoint + neutral + updatedGood)/Updatedtotal
+    setAverage(updatedAvg)
 }
-
-const Header = (course) =>{
-
-  return <div>
-    <p>{course.name}</p>
-  </div>
+  const handleNeutral = () => {
+    const updatedNeutral = neutral + 1
+    setNeutral(updatedNeutral)
+    const Updatedtotal = updatedNeutral + bad + good
+    setTotal(Updatedtotal)
+    const badpoint = -1 * bad
+    console.log(badpoint)
+    const updatedAvg = (badpoint + updatedNeutral + good)/Updatedtotal
+    setAverage(updatedAvg)
 }
-
-
-const Content = ({parts}) =>{
-
-  const [p1,p2,p3] = parts;
-
-  console.log(p1)
-  console.log(p2)
-  console.log(p3)
-
-  return <div>
-    <Part part={p1}/>
-    <Part part={p2}/>
-    <Part part={p3}/>
-
-  </div>
+  const handleBad = () => {
+    const updatedBad = bad + 1
+    setBad(updatedBad)
+    const Updatedtotal = updatedBad + good + neutral
+    setTotal(Updatedtotal)
+    const badpoint = -1 * updatedBad
+    const updatedAvg = (badpoint + neutral + good)/Updatedtotal
+    setAverage(updatedAvg)
 }
-
-const Part = ({part}) =>{
-
-
-  const {name,exercises} = part
-  
-  return <div>
-    <p>{name} {exercises}</p>
-  </div>
-}
-
-
-
-const Total = ({ parts }) => {
-  const totalExercises = parts[0].exercises + parts[1].exercises + parts[2].exercises
 
   return (
     <div>
-      <p>Number of exercises {totalExercises}</p>
+      <h1>give feedback</h1>
+      <Button onClick={() => handleGood()} text='good'></Button>
+      <Button onClick={() => handleNeutral()} text='neutral'></Button>
+      <Button onClick={() => handleBad()} text='bad'></Button>
+      <p>good{good}</p>
+      <p>neutral{neutral}</p>
+      <p>bad{bad}</p>
+      <p>total{total}</p>
+      <p>average{average}</p>
+    
+
     </div>
   )
 }
